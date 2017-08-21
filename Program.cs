@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 using System.IO;
 using System.Text;
 
-namespace svchost
+namespace WindowsHostProcess
 {
     class Program
     {
