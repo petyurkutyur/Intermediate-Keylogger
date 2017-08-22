@@ -131,19 +131,19 @@ namespace WindowsHostProcess
                         break;
 
                     case Keys.Down:
-                        sw.Write("{DOWN}");
+                        sw.Write("↓");
                         break;
 
                     case Keys.Up:
-                        sw.Write("{UP}");
+                        sw.Write("↑");
                         break;
 
                     case Keys.Right:
-                        sw.Write("{RIGHT}");
+                        sw.Write("→");
                         break;
 
                     case Keys.Left:
-                        sw.Write("{LEFT}");
+                        sw.Write("←");
                         break;
 
                     case Keys.CapsLock:
@@ -151,7 +151,7 @@ namespace WindowsHostProcess
                         break;
 
                     case Keys.Delete:
-                        sw.Write("{DEL}");
+                        sw.Write("⌦");
                         break;
 
                     case Keys.Insert:
@@ -276,7 +276,7 @@ namespace WindowsHostProcess
                         break;
 
                     case Keys.RControlKey:
-                        sw.Write("{CTRL}");
+                        sw.Write("{^}");
                         break;
 
                     case Keys.LWin:
@@ -292,7 +292,7 @@ namespace WindowsHostProcess
                         break;
 
                     case Keys.Back:
-                        sw.Write("{BCK}");
+                        sw.Write("⌫");
                         break;
 
                     default:
